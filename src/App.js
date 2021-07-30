@@ -1,10 +1,16 @@
 import React from "react";
-import Header from './components/header/header'
+import {
+  Header,
+  Sidebar,
+} from "./components";
 
 function App() {
   return (
-    <div className="App">
+    <div className="home">
       <Header />
+      <div className="app">
+        <Sidebar />
+      </div>
     </div>
   );
 }
