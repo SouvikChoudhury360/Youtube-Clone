@@ -2,6 +2,7 @@ import React from "react";
 import {
   Header,
   Sidebar,
+  Main
 } from "./components";
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
       <Header />
       <div className="app">
         <Sidebar />
+        <Main />
       </div>
     </div>
   );
