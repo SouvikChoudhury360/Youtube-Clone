@@ -1,17 +1,21 @@
-import React from "react";
-import VideoThumb from "./VideoThumb";
-import "./styles.css";
-import { useAppContext } from "../../context/appContext";
-
+import React from 'react'
+import VideoThumb from './VideoThumb'
+import './styles.css'
 const Main = () => {
-  const { videos } = useAppContext();
   return (
-    <div className="main">
-      {videos.map((video) => (
-        <VideoThumb video={video} />
-      ))}
+    <div>
+      <VideoThumb />
+      <VideoThumb />
+      <VideoThumb />
+      <VideoThumb />
+      <VideoThumb />
+      <VideoThumb />
+      <VideoThumb />
+      <VideoThumb />
+      <VideoThumb />
+      <VideoThumb />
     </div>
-  );
-};
+  )
+}
 
 export default Main;
