@@ -1,13 +1,16 @@
 import { Home, ExpandMore, OndemandVideo, Restore, Subscriptions, ThumbUp, VideoLibrary, WatchLater, Whatshot } from '@material-ui/icons';
 import React from 'react';
 import './style.css'
+import { useHistory } from "react-router-dom";
 
+const Sidebar = ({ changeWidth }) => {
+    const history = useHistory();
 
-const Sidebar = () => {
+    const handleClick = () => history.push("/");
     return (
-        <div className ="sidebar">
+        <div className={`sidebar ${changeWidth && "sidebar__extraWidth"}`}>
             <div className="sidebar__buttons">
-            <div className="sidebar__btn sidebar__btn--active">
+            <div onClick={handleClick} className="sidebar__btn sidebar__btn--active">
                 <Home className="sidebar_icon" />
                 <p>Home</p>
             </div>
