@@ -4,7 +4,8 @@ import {
   Sidebar,
   Main,
   Watch,
-  PreviewChannel
+  PreviewChannel,
+  Login
 } from "./components";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -13,7 +14,7 @@ function App() {
     <Router>
       <Switch>
       <Route exact path="/login">
-            <h1>login</h1>
+            <Login />
           </Route>
           
         <div className="home">
