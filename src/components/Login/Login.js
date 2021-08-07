@@ -7,6 +7,10 @@ import "./styles.css";
 const Login = () => {
     const [loading, setLoading] = useState(false);
     const [showSignUp, setShowSignUp] = useState(false);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [mailError, setEmailError] = useState({state: false, msg: ""});
+    const [passwordError, setPasswordError] = useState({state: false, msg: ""});
     const toogleSignUp = ()=>{
       setLoading(true);
       //w8 for few seconds
@@ -15,9 +19,33 @@ const Login = () => {
       setShowSignUp(true);
 
         
-      },1500);
+      },1000);
       
-    }
+    };
+    const signin =(e)=> {
+      e.preventDefault();
+      setLoading(true);
+      auth.signInWithEmailAndPassword(email, password).then(()=>
+      {
+        setEmailError({ state: false, msg: ""});
+        setPasswordError({ state: false, msg: ""});
+      }).catch((err) =>{
+        setLoading(false);
+
+        if (err.code === "auth/wrong-password") {
+          setEmailError({ state: false, msg: "" });
+          setPasswordError({ state: true, msg: "Incorrect password" });
+        } else if (
+          err.code === "auth/user-not-found" ||
+          err.code === "auth/invalid-email"
+        ) {
+          setEmailError({ state: true, msg: "Email Dosen't exsist" });
+          setPasswordError({ state: false, msg: "" });
+        }
+      }
+      );
+
+    };
 
 
     return (
@@ -43,6 +71,10 @@ const Login = () => {
                   variant="outlined"
                   className="login__input"
                   type="email"
+                  value={email}
+                  onChange={(e)=>setEmail(e.target.value)}
+                  error={mailError.state}
+                  helperText={mailError.msg}
                 />
   
                 <TextField
@@ -51,6 +83,10 @@ const Login = () => {
                   variant="outlined"
                   className="login__input"
                   type="password"
+                  value={password}
+                  onChange={(e)=>setPassword(e.target.value)}
+                  error={passwordError.state}
+                  helperText={passwordError.msg}
                 />
                 <div className="login__infoText">
                   Not your computer? Use guest mode to sign in privately?
@@ -70,6 +106,7 @@ const Login = () => {
                     className="login__button"
                     color="primary"
                     variant="contained"
+                    onClick={signin}
                   >
                     Sign in
                   </Button>

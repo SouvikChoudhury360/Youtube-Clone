@@ -41,7 +41,8 @@ const Signup = ({setShowSignUp}) => {
             auth.currentUser.updateProfile({
                 displayName: '${formData.firstName} ${formData.lastName}',
 
-            }).then(()=>{
+            })
+            .then(()=>{
                 setLoading(false);
                 setEmailError({state: false, msg: ""});
                 setPasswordError({state: false, msg: ""});
@@ -49,12 +50,30 @@ const Signup = ({setShowSignUp}) => {
 
 
         })
-        // .catch((error) =>{
-        //     if(error.code === "")
-
-        // });
+        .catch((error) => {
+            if(error.code === "auth/email-already-in-use"){
+                setEmailError({state: true, msg: "Email is already in use"});
+                setLoading(false);
+                setFormData({ ...formData, email: ""});
+            }
+            if(error.code === "auth/invalid-email"){
+                setEmailError({state: true, msg:"Email address is not properly formatted"});
+                
+                setFormData({ ...formData, email: ""});
+                setLoading(false);
+            }
+            if(error.code === "auth/weak-password"){
+                setEmailError({state: true, msg: "Password should be atleast 6 characters"});
+                setLoading(false);
+                setFormData({ ...formData, password: "", confirmPassword:""});
+            }
+           
+        });
+        
 
     };
+    const disabled = 
+    !formData.email || !formData.password || !formData.firstName || !formData.confirmPassword || !formData.lastName;
     return (
         <div>
           
@@ -91,7 +110,9 @@ const Signup = ({setShowSignUp}) => {
 
 
                                 </div>
-                                <TextField id="outlined-basic" label=" Email" type="email" fullWidth  variant="outlined" helperText="You can use letters, numbers & periods"
+                                <TextField id="outlined-basic" label=" Email" type="email" fullWidth  variant="outlined" helperText={
+                                    emailError.state ? emailError.msg:"You can use letters numbers and periods"
+                                }
                                  value={FormData.email}
                                  onChange={(e)=>{
                                      setFormData({
@@ -99,12 +120,15 @@ const Signup = ({setShowSignUp}) => {
                                          email: e.target.value,
                                      })
                                  }}
+                                 error={emailError.state}
+                                 
                                 />
                                 <div className="signup__passwordInputs">
                                     <div className="signup__passwordWrapper">
                                     <TextField id="outlined-basic" label="Password" type={checked ? "text" : "password"} className="signup__nameInput" variant="outlined"
                                     className="signup__passwordInput"
                                     value={FormData.password}
+                                    error={passwordError.state}
                                     onChange={(e)=>{
                                         setFormData({
                                             ...formData,
@@ -114,6 +138,7 @@ const Signup = ({setShowSignUp}) => {
                                     <TextField id="outlined-basic" label="Confirm Password " type={checked ? "text" : "password"}  className="signup__nameInput" variant="outlined"
                                      className="signup__passwordInput"
                                      value={FormData.confirmPassword}
+                                     error={passwordError.state}
                                      onChange={(e)=>{
                                          setFormData({
                                              ...formData,
@@ -122,9 +147,10 @@ const Signup = ({setShowSignUp}) => {
                                      }}
                                      />
                                     </div>
-                                    <p className="signup__helpertext">
-                                        Use 8 or more characters with mix of letters, numbers & symbols
+                                    <p className={'signup__helpertext ${passswordError.state && "signin__error"}'} >
+                                        {passwordError.state ? passwordError.msg : "Use 8 or more characters with a mix of letters, numbers and symbols"}
                                     </p>
+
                                     <FormControlLabel
                                     
                                     control={
@@ -143,10 +169,12 @@ const Signup = ({setShowSignUp}) => {
                                     <Button className="signup__button" variant="text"
                                     color="primary"
                                     onClick={toogleSignUp}
+                                  
                                     >Sign in instead</Button>
                                     <Button className="signup__button" variant="contained"
                                     color="primary"
                                     onClick={createAccount}
+                                    disabled={disabled}
                               
                                     >Create</Button>
                                 </div>
