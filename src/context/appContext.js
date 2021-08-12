@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../lib/firebase";
 
-
 const AppContext = createContext();
 
 export const useAppContext = () => {
@@ -12,6 +11,7 @@ export const AppContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [appState, setAppState] = useState("empty");
   const [showUploadVideo, setShowUploadVideo] = useState(false);
+
   const [videos, setVideos] = useState([]);
 
   useEffect(() => {
