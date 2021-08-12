@@ -1,8 +1,18 @@
-import { Avatar, Badge, Button, makeStyles, Popover } from '@material-ui/core'
-import { Apps, CameraAltOutlined, Menu, Notifications, PersonAddOutlined, Search, VideoCall } from '@material-ui/icons'
-import React from 'react';
-import logo from '../../assets/logo1.png'
-import './styles.css'
+import { Avatar, Badge, Button, makeStyles, Popover } from "@material-ui/core";
+import {
+  Apps,
+  CameraAltOutlined,
+  Menu,
+  Notifications,
+  PersonAddOutlined,
+  Search,
+  VideoCall,
+} from "@material-ui/icons";
+import React from "react";
+import logo from "../../assets/logo1.png";
+import { useAppContext } from "../../context/appContext";
+import { auth } from "../../lib/firebase";
+import "./styles.css";
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -13,7 +23,9 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+
   const classes = useStyles();
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -24,6 +36,8 @@ const Header = () => {
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
+
+  const { currentUser, setShowUploadVideo } = useAppContext();
   return (
     <div className="header">
       <div className="header__left">
@@ -39,10 +53,11 @@ const Header = () => {
       </form>
 
       <div className="header__right">
-        <VideoCall />
+        <VideoCall onClick={() => setShowUploadVideo(true)} />
         <Apps />
         <Notifications />
         <Avatar onClick={handleClick} />
+
         <Popover
           open={open}
           id={id}
@@ -75,9 +90,9 @@ const Header = () => {
 
               <div className="home__text">
                 <div className="home__displayName">
-                  displayName
+                  {currentUser?.displayName}
                 </div>
-                <div className="home__mail">email</div>
+                <div className="home__mail">{currentUser?.email}</div>
               </div>
               <div className="home__btn">Manage your google account</div>
             </div>
@@ -89,7 +104,7 @@ const Header = () => {
               </div>
 
               <Button
-                //onClick={() => auth.signOut()}
+                onClick={() => auth.signOut()}
                 variant="outlined"
                 className="home__signOut"
               >
@@ -106,7 +121,7 @@ const Header = () => {
         </Popover>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

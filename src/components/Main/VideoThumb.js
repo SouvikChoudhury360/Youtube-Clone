@@ -1,33 +1,45 @@
 import { Avatar } from "@material-ui/core";
-import React from 'react';
+import moment from "moment";
+import React from "react";
 import { useHistory } from "react-router-dom";
 
-const VideoThumb = () => {
+const VideoThumb = ({ video }) => {
   const history = useHistory();
-  const handleThumbClick = () => history.push('/watch');
-  const handleAvatarClick = () => history.push('/PreviewChannel');
+
+  const handleThumbClick = () => history.push(`/watch/${video.id}`);
+  const handleAvatarClick = () =>
+    history.push(`/PreviewChannel?name=${video.email}`);
+
+  const formattedDate = moment
+    .unix(video?.timestamp?.seconds)
+    .format("YYYYMMDD, HH:mm:ss");
+
+  console.log(formattedDate);
+  const uplodedTime = moment(formattedDate, "YYYYMMDD, HH:mm:ss").fromNow();
+
   return (
     <div className="videothumb">
-      <img 
-      onClick={handleThumbClick}
-      className="videothumb__thumbnail" 
-      src="https://images.unsplash.com/photo-1611162616475-46b635cb6868?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dGh1bWJuYWlsfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60"
-      alt="video Thumbnail" />
+      <img
+        onClick={handleThumbClick}
+        className="videothumb__thumbnail"
+        src={video.thumbnailURL}
+        alt="Thumbnail"
+      />
+
       <div className="videothumb__details">
-        <Avatar onClick={handleAvatarClick}/>
+        <Avatar onClick={handleAvatarClick} />
 
         <div className="videothumb__channel">
-          <h1 className="videothumb__title">
-            Create a yt clone
-          </h1>
+          <h1 className="videothumb__title">{video.title}</h1>
+
           <div className="videothumb__texts">
-            <p className="videothumb__text">G-Apps clone</p>
-            <p className="videothumb__text">55 views * 20 hours ago</p>
+            <p className="videothumb__text">{video.channelName}</p>
+            <p className="videothumb__text">123 views • {uplodedTime}</p>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default VideoThumb;

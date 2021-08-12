@@ -5,3 +5,4 @@ export { default as Watch } from "./Watch/Watch";
 export { default as VideoSmall } from "./VideoSmall/VideoSmall";
 export { default as PreviewChannel } from "./PreviewChannel/PreviewChannel";
 export { default as Login } from "./Login/Login";
+export { default as SelectVideo } from "./UploadVideo/SelectVideo";
